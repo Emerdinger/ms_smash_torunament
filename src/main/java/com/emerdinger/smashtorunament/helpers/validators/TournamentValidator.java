@@ -63,6 +63,10 @@ public class TournamentValidator {
             return Mono.error(new BadRequestError("Finished field are null"));
         }
 
+        if (tournament.getCity() == null || tournament.getCity().isEmpty()) {
+            return Mono.error(new BadRequestError("City field are null or empty"));
+        }
+
         return Mono.just(tournament);
     }
 

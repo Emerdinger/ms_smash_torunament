@@ -25,4 +25,5 @@ public class TournamentEntity {
     private Integer qualifiedPlayersPerGroup;
     private Boolean finished;
     private Boolean needPassword;
+    private String city;
 }

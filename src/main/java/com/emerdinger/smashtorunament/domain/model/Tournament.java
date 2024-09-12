@@ -24,4 +24,5 @@ public class Tournament extends Model<String> {
     private Integer qualifiedPlayersPerGroup;
     private Boolean finished;
     private Boolean needPassword;
+    private String city;
 }
