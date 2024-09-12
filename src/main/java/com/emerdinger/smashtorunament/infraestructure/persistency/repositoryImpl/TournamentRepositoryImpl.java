@@ -30,6 +30,11 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     }
 
     @Override
+    public Mono<Void> deleteTournament(String id) {
+        return tournamentDao.deleteById(id);
+    }
+
+    @Override
     public Mono<Tournament> findById(String id) {
         return tournamentDao.findById(id)
                 .map(tournament -> objectMapper.convertValue(tournament, Tournament.class));
