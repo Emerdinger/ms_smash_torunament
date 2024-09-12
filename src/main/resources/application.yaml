@@ -1,0 +1,13 @@
+server:
+  port: ${APP_PORT:8080}
+spring:
+  application:
+    name: "smashtournament"
+  webflux:
+    base-path: /api/v1/tournament
+logging:
+  level:
+    org.springframework.data.mongodb: WARN
+    org.mongodb.driver: WARN
+mongo:
+  uri: ${MONGO_URI}
