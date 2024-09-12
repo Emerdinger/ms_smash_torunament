@@ -34,4 +34,11 @@ public class TournamentHandler {
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournament));
     }
+
+    public Mono<ServerResponse> findById(ServerRequest serverRequest) {
+        return tournamentManejador.findById(serverRequest.pathVariable("tournamentId"))
+                .flatMap(findTournament -> ServerResponse.status(200)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(findTournament));
+    }
 }

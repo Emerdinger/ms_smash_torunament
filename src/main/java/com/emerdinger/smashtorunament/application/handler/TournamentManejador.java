@@ -17,4 +17,8 @@ public class TournamentManejador {
     public Mono<Tournament> updateTournament(Tournament tournament) {
         return tournamentUseCase.updateTournament(tournament);
     }
+
+    public Mono<Tournament> findById(String id) {
+        return tournamentUseCase.findById(id);
+    }
 }

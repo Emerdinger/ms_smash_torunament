@@ -25,4 +25,9 @@ public class TournamentUseCase {
                         .flatMap(tournamentRepository::updateTournament));
     }
 
+    public Mono<Tournament> findById(String id) {
+        return tournamentRepository.findById(id)
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundError("Tournament not found"))));
+    }
+
 }

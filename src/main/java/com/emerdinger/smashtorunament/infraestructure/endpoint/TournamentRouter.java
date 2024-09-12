@@ -16,7 +16,8 @@ public class TournamentRouter {
     public RouterFunction<ServerResponse> createRouteTournament(TournamentHandler tournamentHandler) {
         return route(GET("/health"), request -> tournamentHandler.health())
                 .andRoute(POST("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::createTournament)
-                .andRoute(PUT("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::updateTournament);
+                .andRoute(PUT("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::updateTournament)
+                .andRoute(GET("/basic-tournament/find/{tournamentId}").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::findById);
 
     }
 }
