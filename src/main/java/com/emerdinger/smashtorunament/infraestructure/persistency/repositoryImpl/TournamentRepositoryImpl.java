@@ -7,6 +7,7 @@ import com.emerdinger.smashtorunament.infraestructure.persistency.entity.Tournam
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Repository
@@ -31,6 +32,12 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     @Override
     public Mono<Tournament> findById(String id) {
         return tournamentDao.findById(id)
+                .map(tournament -> objectMapper.convertValue(tournament, Tournament.class));
+    }
+
+    @Override
+    public Flux<Tournament> findAll() {
+        return tournamentDao.findAll()
                 .map(tournament -> objectMapper.convertValue(tournament, Tournament.class));
     }
 }
