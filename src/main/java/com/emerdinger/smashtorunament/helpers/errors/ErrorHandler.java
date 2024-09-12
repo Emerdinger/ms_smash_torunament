@@ -19,6 +19,7 @@ public class ErrorHandler {
 
     public ErrorHandler() {
         STATUS_CODES.put(NotFoundError.class.getSimpleName(), HttpStatus.NOT_FOUND.value());
+        STATUS_CODES.put(BadRequestError.class.getSimpleName(), HttpStatus.BAD_REQUEST.value());
     }
 
     @ExceptionHandler(Exception.class)

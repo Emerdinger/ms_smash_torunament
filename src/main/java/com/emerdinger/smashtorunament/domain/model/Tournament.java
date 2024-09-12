@@ -15,12 +15,13 @@ import java.time.OffsetDateTime;
 public class Tournament extends Model<String> {
     private String name;
     private String description;
-    private boolean open;
+    private Boolean open;
     private String password;
     private String owner;
     private String status;
     private String gameDate;
-    private int maxGroupPlayers;
-    private int qualifiedPlayersPerGroup;
-    private boolean finished;
+    private Integer maxGroupPlayers;
+    private Integer qualifiedPlayersPerGroup;
+    private Boolean finished;
+    private Boolean needPassword;
 }
