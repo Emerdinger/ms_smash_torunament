@@ -1,13 +1,10 @@
 package com.emerdinger.smashtorunament.domain.model;
 
 import com.emerdinger.smashtorunament.helpers.persistency.Model;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.OffsetDateTime;
 
 @Getter @Setter
 @AllArgsConstructor

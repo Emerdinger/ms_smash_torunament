@@ -9,6 +9,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Component
 @AllArgsConstructor
 public class TournamentHandler {
@@ -55,5 +57,28 @@ public class TournamentHandler {
                 .flatMap(tournament -> ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournament));
+    }
+
+    public Mono<ServerResponse> findByFilters(ServerRequest request) {
+        // Extraer parámetros de consulta
+        Optional<String> status = request.queryParam("status");
+        Optional<Boolean> finished = request.queryParam("finished")
+                .map(Boolean::parseBoolean);
+        Optional<String> owner = request.queryParam("owner");
+        Optional<Boolean> open = request.queryParam("open")
+                .map(Boolean::parseBoolean);
+        Optional<Integer> qualifiedPlayersPerGroup = request.queryParam("qualifiedPlayersPerGroup")
+                .map(Integer::parseInt);
+        Optional<Boolean> needPassword = request.queryParam("needPassword")
+                .map(Boolean::parseBoolean);
+        Optional<Integer> maxGroupPlayers = request.queryParam("maxGroupPlayers")
+                .map(Integer::parseInt);
+        Optional<String> city = request.queryParam("city");
+
+        return tournamentManejador.findByFilters(status, finished, owner, open, qualifiedPlayersPerGroup, needPassword, maxGroupPlayers, city)
+                .collectList()
+                .flatMap(tournaments -> ServerResponse.status(200)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(tournaments));
     }
 }

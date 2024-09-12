@@ -19,6 +19,7 @@ public class TournamentRouter {
                 .andRoute(PUT("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::updateTournament)
                 .andRoute(GET("/basic-tournament/find/{tournamentId}").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::findById)
                 .andRoute(GET("/basic-tournament/findAll").and(accept(MediaType.APPLICATION_JSON)), request -> tournamentHandler.findAll())
+                .andRoute(GET("/basic-tournament/findByFilters").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::findByFilters)
                 .andRoute(DELETE("/basic-tournament/delete/{tournamentId}").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::deleteTournament);
 
     }

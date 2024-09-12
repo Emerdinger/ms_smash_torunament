@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class TournamentUseCase {
 
@@ -40,6 +42,12 @@ public class TournamentUseCase {
 
     public Flux<Tournament> findAll() {
         return tournamentRepository.findAll();
+    }
+
+    public Flux<Tournament> findByFilters(Optional<String> status, Optional<Boolean> finished, Optional<String> owner, Optional<Boolean> open,
+                                          Optional<Integer> qualifiedPlayersPerGroup, Optional<Boolean> needPassword, Optional<Integer> maxGroupPlayers,
+                                          Optional<String> city) {
+        return tournamentRepository.findByFilters(status, finished, owner, open, qualifiedPlayersPerGroup, needPassword, maxGroupPlayers, city);
     }
 
 }
