@@ -5,4 +5,6 @@ import reactor.core.publisher.Mono;
 
 public interface TournamentRepository {
     Mono<Tournament> createTournament(Tournament tournament);
+    Mono<Tournament> updateTournament(Tournament tournament);
+    Mono<Tournament> findById(String id);
 }

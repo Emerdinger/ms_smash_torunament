@@ -13,4 +13,8 @@ public class TournamentManejador {
     public Mono<Tournament> createTournament(Tournament tournament) {
         return tournamentUseCase.createTournament(tournament);
     }
+
+    public Mono<Tournament> updateTournament(Tournament tournament) {
+        return tournamentUseCase.updateTournament(tournament);
+    }
 }

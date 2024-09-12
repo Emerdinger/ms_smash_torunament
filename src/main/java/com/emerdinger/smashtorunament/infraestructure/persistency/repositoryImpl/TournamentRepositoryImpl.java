@@ -21,4 +21,16 @@ public class TournamentRepositoryImpl implements TournamentRepository {
         return tournamentDao.save(objectMapper.convertValue(tournament, TournamentEntity.class))
                 .map(tournamentSaved -> objectMapper.convertValue(tournamentSaved, Tournament.class));
     }
+
+    @Override
+    public Mono<Tournament> updateTournament(Tournament tournament) {
+        return tournamentDao.save(objectMapper.convertValue(tournament, TournamentEntity.class))
+                .map(tournamentUpdated -> objectMapper.convertValue(tournamentUpdated, Tournament.class));
+    }
+
+    @Override
+    public Mono<Tournament> findById(String id) {
+        return tournamentDao.findById(id)
+                .map(tournament -> objectMapper.convertValue(tournament, Tournament.class));
+    }
 }

@@ -15,7 +15,8 @@ public class TournamentRouter {
     @Bean
     public RouterFunction<ServerResponse> createRouteTournament(TournamentHandler tournamentHandler) {
         return route(GET("/health"), request -> tournamentHandler.health())
-                .andRoute(POST("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::createTournament);
+                .andRoute(POST("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::createTournament)
+                .andRoute(PUT("/basic-tournament").and(accept(MediaType.APPLICATION_JSON)), tournamentHandler::updateTournament);
 
     }
 }

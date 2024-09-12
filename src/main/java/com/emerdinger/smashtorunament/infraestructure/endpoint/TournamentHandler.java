@@ -21,9 +21,16 @@ public class TournamentHandler {
 
     public Mono<ServerResponse> createTournament(ServerRequest request) {
         return request.bodyToMono(Tournament.class)
-                .doOnError(error -> System.err.println("Error de decodificación: " + error.getMessage()))
                 .flatMap(tournamentManejador::createTournament)
                 .flatMap(tournament -> ServerResponse.status(201)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(tournament));
+    }
+
+    public Mono<ServerResponse> updateTournament(ServerRequest request) {
+        return request.bodyToMono(Tournament.class)
+                .flatMap(tournamentManejador::updateTournament)
+                .flatMap(tournament -> ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournament));
     }
