@@ -1,9 +1,12 @@
 package com.emerdinger.smashtorunament.infraestructure.persistency.repositoryImpl;
 
 import com.emerdinger.smashtorunament.domain.model.Tournament;
+import com.emerdinger.smashtorunament.domain.model.TournamentRestrictions;
 import com.emerdinger.smashtorunament.domain.repository.TournamentRepository;
 import com.emerdinger.smashtorunament.infraestructure.persistency.dao.TournamentDao;
+import com.emerdinger.smashtorunament.infraestructure.persistency.dao.TournamentRestrictionDao;
 import com.emerdinger.smashtorunament.infraestructure.persistency.entity.TournamentEntity;
+import com.emerdinger.smashtorunament.infraestructure.persistency.entity.TournamentRestrictionsEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -22,11 +25,16 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     private final TournamentDao tournamentDao;
     private final ObjectMapper objectMapper;
     private final ReactiveMongoTemplate reactiveMongoTemplate;
+    private final TournamentRestrictionDao tournamentRestrictionDao;
 
     @Override
     public Mono<Tournament> createTournament(Tournament tournament) {
         return tournamentDao.save(objectMapper.convertValue(tournament, TournamentEntity.class))
-                .map(tournamentSaved -> objectMapper.convertValue(tournamentSaved, Tournament.class));
+                .flatMap(tournamentSaved -> {
+                    TournamentRestrictions restrictions = new TournamentRestrictions(tournamentSaved.getId(), false, false, false);
+                    return tournamentRestrictionDao.save(objectMapper.convertValue(restrictions, TournamentRestrictionsEntity.class))
+                            .thenReturn(objectMapper.convertValue(tournamentSaved, Tournament.class));
+                });
     }
 
     @Override
