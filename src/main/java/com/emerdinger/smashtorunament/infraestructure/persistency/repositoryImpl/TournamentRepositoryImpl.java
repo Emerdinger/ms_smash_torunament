@@ -77,4 +77,14 @@ public class TournamentRepositoryImpl implements TournamentRepository {
 
         return reactiveMongoTemplate.find(query, Tournament.class);
     }
+
+    @Override
+    public Mono<Tournament> updateStatus(String id, String status) {
+        return tournamentDao.findById(id)
+                .flatMap(tournament -> {
+                    tournament.setStatus(status);
+                    return tournamentDao.save(tournament);
+                })
+                .map(tournamentSaved -> objectMapper.convertValue(tournamentSaved, Tournament.class));
+    }
 }

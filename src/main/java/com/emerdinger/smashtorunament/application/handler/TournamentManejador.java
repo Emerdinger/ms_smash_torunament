@@ -38,4 +38,8 @@ public class TournamentManejador {
                                           Optional<String> city) {
         return tournamentUseCase.findByFilters(status, finished, owner, open, qualifiedPlayersPerGroup, needPassword, maxGroupPlayers, city);
     }
+
+    public Mono<Tournament> updateStatus(String id, String status){
+        return tournamentUseCase.updateStatus(id, status);
+    }
 }

@@ -50,4 +50,8 @@ public class TournamentUseCase {
         return tournamentRepository.findByFilters(status, finished, owner, open, qualifiedPlayersPerGroup, needPassword, maxGroupPlayers, city);
     }
 
+    public Mono<Tournament> updateStatus(String id, String status) {
+        return tournamentRepository.updateStatus(id, status);
+    }
+
 }

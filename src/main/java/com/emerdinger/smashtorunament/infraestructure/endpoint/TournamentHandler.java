@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -80,5 +81,12 @@ public class TournamentHandler {
                 .flatMap(tournaments -> ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournaments));
+    }
+
+    public Mono<ServerResponse> updateStatus(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(Map.class)
+                .flatMap(body -> ServerResponse.status(200).
+                        contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(tournamentManejador.updateStatus(body.get("id").toString(), body.get("status").toString())));
     }
 }

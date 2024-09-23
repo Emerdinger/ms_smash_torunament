@@ -15,4 +15,5 @@ public interface TournamentRepository {
     Flux<Tournament> findByFilters(Optional<String> status, Optional<Boolean> finished, Optional<String> owner, Optional<Boolean> open,
                                    Optional<Integer> qualifiedPlayersPerGroup, Optional<Boolean> needPassword, Optional<Integer> maxGroupPlayers,
                                    Optional<String> city);
+    Mono<Tournament> updateStatus(String id, String status);
 }
