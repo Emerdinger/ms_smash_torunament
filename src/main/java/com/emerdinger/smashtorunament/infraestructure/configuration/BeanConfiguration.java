@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class BeanConfiguration {
@@ -20,7 +21,15 @@ public class BeanConfiguration {
         return new TournamentManejador(tournamentUseCase);
     }
 
-    @Bean TournamentUseCase tournamentUseCase(TournamentRepository tournamentRepository) {
+    @Bean
+    public TournamentUseCase tournamentUseCase(TournamentRepository tournamentRepository) {
         return new TournamentUseCase(tournamentRepository);
+    }
+
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder()
+                .baseUrl("http://127.0.0.1:8080")
+                .build();
     }
 }
