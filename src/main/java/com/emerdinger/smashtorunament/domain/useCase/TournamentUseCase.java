@@ -50,8 +50,14 @@ public class TournamentUseCase {
         return tournamentRepository.findByFilters(status, finished, owner, open, qualifiedPlayersPerGroup, needPassword, maxGroupPlayers, city);
     }
 
-    public Mono<Tournament> updateStatus(String id, String status) {
-        return tournamentRepository.updateStatus(id, status);
+    public Mono<Tournament> updateStatus(String id, String status, String userId) {
+        return TournamentValidator.validUpdateStatus(id, status)
+                        .then(tournamentRepository.findByIdAndOwner(id, userId)
+                                .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundError("This tournament is not yours"))))
+                                .flatMap(tournament -> {
+                                    tournament.setStatus(status);
+                                    return tournamentRepository.updateTournament(tournament);
+                                }));
     }
 
 }

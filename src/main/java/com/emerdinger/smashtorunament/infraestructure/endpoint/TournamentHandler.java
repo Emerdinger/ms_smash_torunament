@@ -85,8 +85,10 @@ public class TournamentHandler {
 
     public Mono<ServerResponse> updateStatus(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Map.class)
-                .flatMap(body -> ServerResponse.status(200).
-                        contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(tournamentManejador.updateStatus(body.get("id").toString(), body.get("status").toString())));
+                .flatMap(body -> tournamentManejador.updateStatus((String) body.get("id"), (String) body.get("status"),
+                        (String) serverRequest.attributes().get("userId")))
+                .flatMap(tournamentUpdated -> ServerResponse.status(200)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .bodyValue(tournamentUpdated));
     }
 }

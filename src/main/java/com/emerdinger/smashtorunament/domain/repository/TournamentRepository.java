@@ -11,9 +11,9 @@ public interface TournamentRepository {
     Mono<Tournament> updateTournament(Tournament tournament);
     Mono<Void> deleteTournament(String id);
     Mono<Tournament> findById(String id);
+    Mono<Tournament> findByIdAndOwner(String id, String ownerId);
     Flux<Tournament> findAll();
     Flux<Tournament> findByFilters(Optional<String> status, Optional<Boolean> finished, Optional<String> owner, Optional<Boolean> open,
                                    Optional<Integer> qualifiedPlayersPerGroup, Optional<Boolean> needPassword, Optional<Integer> maxGroupPlayers,
                                    Optional<String> city);
-    Mono<Tournament> updateStatus(String id, String status);
 }

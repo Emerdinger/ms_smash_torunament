@@ -29,18 +29,18 @@ public class TournamentRepositoryImpl implements TournamentRepository {
 
     @Override
     public Mono<Tournament> createTournament(Tournament tournament) {
-        return tournamentDao.save(objectMapper.convertValue(tournament, TournamentEntity.class))
+        return tournamentDao.save(toTournamentEntity(tournament))
                 .flatMap(tournamentSaved -> {
                     TournamentRestrictions restrictions = new TournamentRestrictions(tournamentSaved.getId(), false, false, false);
                     return tournamentRestrictionDao.save(objectMapper.convertValue(restrictions, TournamentRestrictionsEntity.class))
-                            .thenReturn(objectMapper.convertValue(tournamentSaved, Tournament.class));
+                            .thenReturn(toTournament(tournamentSaved));
                 });
     }
 
     @Override
     public Mono<Tournament> updateTournament(Tournament tournament) {
-        return tournamentDao.save(objectMapper.convertValue(tournament, TournamentEntity.class))
-                .map(tournamentUpdated -> objectMapper.convertValue(tournamentUpdated, Tournament.class));
+        return tournamentDao.save(toTournamentEntity(tournament))
+                .map(this::toTournament);
     }
 
     @Override
@@ -51,13 +51,19 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     @Override
     public Mono<Tournament> findById(String id) {
         return tournamentDao.findById(id)
-                .map(tournament -> objectMapper.convertValue(tournament, Tournament.class));
+                .map(this::toTournament);
+    }
+
+    @Override
+    public Mono<Tournament> findByIdAndOwner(String id, String ownerId) {
+        return tournamentDao.findByIdAndOwner(id, ownerId)
+                .map(this::toTournament);
     }
 
     @Override
     public Flux<Tournament> findAll() {
         return tournamentDao.findAll()
-                .map(tournament -> objectMapper.convertValue(tournament, Tournament.class));
+                .map(this::toTournament);
     }
 
     @Override
@@ -78,13 +84,12 @@ public class TournamentRepositoryImpl implements TournamentRepository {
         return reactiveMongoTemplate.find(query, Tournament.class);
     }
 
-    @Override
-    public Mono<Tournament> updateStatus(String id, String status) {
-        return tournamentDao.findById(id)
-                .flatMap(tournament -> {
-                    tournament.setStatus(status);
-                    return tournamentDao.save(tournament);
-                })
-                .map(tournamentSaved -> objectMapper.convertValue(tournamentSaved, Tournament.class));
+    public Tournament toTournament(TournamentEntity tournamentEntity) {
+        return objectMapper.convertValue(tournamentEntity, Tournament.class);
     }
+
+    private TournamentEntity toTournamentEntity(Tournament tournament) {
+        return objectMapper.convertValue(tournament, TournamentEntity.class);
+    }
+
 }

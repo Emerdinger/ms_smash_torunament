@@ -24,7 +24,7 @@ public class AuthWebFilter implements WebFilter {
     private static final String BASE_URI = "/api/v1/tournament";
 
     private static final Set<String> PROTECTED_ROUTES = Set.of(
-            BASE_URI
+            BASE_URI + "/basic-tournament/update-status"
     );
 
     @Override

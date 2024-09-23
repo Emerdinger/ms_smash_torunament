@@ -70,4 +70,16 @@ public class TournamentValidator {
         return Mono.just(tournament);
     }
 
+    public static Mono<Void> validUpdateStatus(String id, String status) {
+        if (id == null || id.isEmpty()) {
+            return Mono.error(new BadRequestError("Tournament id field is missing in your body request"));
+        }
+
+        if (status == null ||status.isEmpty()) {
+            return Mono.error(new BadRequestError("Status field ins missing in your body request"));
+        }
+
+        return Mono.empty();
+    }
+
 }
