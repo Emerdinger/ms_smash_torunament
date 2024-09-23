@@ -18,6 +18,11 @@ public class TournamentHandler {
 
     private final TournamentManejador tournamentManejador;
 
+    private static final String TOURNAMENT_ID = "tournamentId";
+    private static final String USER_ID = "userId";
+    private static final String ID = "id";
+    private static final String STATUS = "status";
+
     public Mono<ServerResponse> health() {
         return ServerResponse.ok().bodyValue("Ok");
     }
@@ -39,14 +44,14 @@ public class TournamentHandler {
     }
 
     public Mono<ServerResponse> deleteTournament(ServerRequest request) {
-        return tournamentManejador.deleteTournament(request.pathVariable("tournamentId"))
+        return tournamentManejador.deleteTournament(request.pathVariable(TOURNAMENT_ID))
                 .then(ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue("Deleted"));
     }
 
     public Mono<ServerResponse> findById(ServerRequest serverRequest) {
-        return tournamentManejador.findById(serverRequest.pathVariable("tournamentId"))
+        return tournamentManejador.findById(serverRequest.pathVariable(TOURNAMENT_ID))
                 .flatMap(findTournament -> ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(findTournament));
@@ -61,7 +66,7 @@ public class TournamentHandler {
     }
 
     public Mono<ServerResponse> findByFilters(ServerRequest request) {
-        // Extraer parámetros de consulta
+
         Optional<String> status = request.queryParam("status");
         Optional<Boolean> finished = request.queryParam("finished")
                 .map(Boolean::parseBoolean);
@@ -85,8 +90,8 @@ public class TournamentHandler {
 
     public Mono<ServerResponse> updateStatus(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Map.class)
-                .flatMap(body -> tournamentManejador.updateStatus((String) body.get("id"), (String) body.get("status"),
-                        (String) serverRequest.attributes().get("userId")))
+                .flatMap(body -> tournamentManejador.updateStatus((String) body.get(ID), (String) body.get(STATUS),
+                        (String) serverRequest.attributes().get(USER_ID)))
                 .flatMap(tournamentUpdated -> ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournamentUpdated));
