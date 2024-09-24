@@ -24,14 +24,26 @@ public class TournamentUseCase {
         return TournamentValidator.validateTournament(tournament, "update")
                 .flatMap(validTournament -> tournamentRepository.findById(tournament.getId())
                         .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundError("Tournament not found"))))
-                        .map(tour -> tournament)
+                        .map(tour -> {
+                            if (!tour.getOwner().equals(tournament.getOwner())) {
+                                throw new NotFoundError("This tournament is not yours");
+                            } else {
+                                return tournament;
+                            }
+                        })
                         .flatMap(tournamentRepository::updateTournament));
     }
 
-    public Mono<Void> deleteTournament(String id) {
+    public Mono<Void> deleteTournament(String id, String userId) {
         return tournamentRepository.findById(id)
                 .switchIfEmpty(Mono.defer(() -> Mono.error(new NotFoundError("Tournament not found"))))
-                .map(tour -> id)
+                .map(tournament -> {
+                    if (!tournament.getOwner().equals(userId)) {
+                        throw new NotFoundError("This tournament is not yours");
+                    } else {
+                        return id;
+                    }
+                })
                 .flatMap(tournamentRepository::deleteTournament);
     }
 

@@ -29,7 +29,10 @@ public class TournamentHandler {
 
     public Mono<ServerResponse> createTournament(ServerRequest request) {
         return request.bodyToMono(Tournament.class)
-                .flatMap(tournamentManejador::createTournament)
+                .flatMap(tournament -> {
+                    tournament.setOwner((String) request.attributes().get(USER_ID));
+                    return tournamentManejador.createTournament(tournament);
+                })
                 .flatMap(tournament -> ServerResponse.status(201)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournament));
@@ -37,14 +40,17 @@ public class TournamentHandler {
 
     public Mono<ServerResponse> updateTournament(ServerRequest request) {
         return request.bodyToMono(Tournament.class)
-                .flatMap(tournamentManejador::updateTournament)
+                .flatMap(tournament -> {
+                    tournament.setOwner((String) request.attributes().get(USER_ID));
+                    return tournamentManejador.updateTournament(tournament);
+                })
                 .flatMap(tournament -> ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(tournament));
     }
 
     public Mono<ServerResponse> deleteTournament(ServerRequest request) {
-        return tournamentManejador.deleteTournament(request.pathVariable(TOURNAMENT_ID))
+        return tournamentManejador.deleteTournament(request.pathVariable(TOURNAMENT_ID), request.attributes().get(USER_ID).toString())
                 .then(ServerResponse.status(200)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue("Deleted"));

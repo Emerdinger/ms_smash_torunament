@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Component
 @RequiredArgsConstructor
@@ -24,14 +25,17 @@ public class AuthWebFilter implements WebFilter {
     private static final String BASE_URI = "/api/v1/tournament";
 
     private static final Set<String> PROTECTED_ROUTES = Set.of(
-            BASE_URI + "/basic-tournament/update-status"
+            BASE_URI + "/basic-tournament/update-status",
+            BASE_URI + "/basic-tournament"
     );
+
+    private static final Pattern DYNAMIC_ROUTE_PATTERN = Pattern.compile(BASE_URI + "/basic-tournament/(find/\\w+|delete/\\w+)");
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
 
-        if (PROTECTED_ROUTES.contains(path)) {
+        if (isProtectedRoute(path)) {
             String token = exchange.getRequest().getHeaders().getFirst("Authorization");
 
             return isValidSession(token)
@@ -52,6 +56,10 @@ public class AuthWebFilter implements WebFilter {
         }
 
         return chain.filter(exchange);
+    }
+
+    private boolean isProtectedRoute(String path) {
+        return PROTECTED_ROUTES.contains(path) || DYNAMIC_ROUTE_PATTERN.matcher(path).matches();
     }
 
     private Mono<String> isValidSession(String token) {

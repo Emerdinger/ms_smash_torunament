@@ -21,8 +21,8 @@ public class TournamentManejador {
         return tournamentUseCase.updateTournament(tournament);
     }
 
-    public Mono<Void> deleteTournament(String id){
-        return tournamentUseCase.deleteTournament(id);
+    public Mono<Void> deleteTournament(String id, String userId) {
+        return tournamentUseCase.deleteTournament(id, userId);
     }
 
     public Mono<Tournament> findById(String id) {
