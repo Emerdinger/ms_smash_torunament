@@ -1,5 +1,6 @@
 package com.emerdinger.smashtorunament.infraestructure.endpoint;
 
+import com.emerdinger.smashtorunament.infraestructure.endpoint.handler.TournamentHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

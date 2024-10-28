@@ -1,4 +1,4 @@
-package com.emerdinger.smashtorunament.infraestructure.endpoint;
+package com.emerdinger.smashtorunament.infraestructure.endpoint.handler;
 
 import com.emerdinger.smashtorunament.application.handler.TournamentManejador;
 import com.emerdinger.smashtorunament.domain.model.Tournament;
